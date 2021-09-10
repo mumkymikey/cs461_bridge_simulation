@@ -5,10 +5,12 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 
+// Bridge Simulation Class
 public class BridgeSimulation {
     final static int HAND_SIZE = 13;
     public static final DecimalFormat round = new DecimalFormat("##.##");
 
+    // Starting function
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         String anotherHand = "y";
@@ -51,11 +53,12 @@ public class BridgeSimulation {
                 evaluateScore(score, scoringScale);
             }
 
-            System.out.println("Pass: " + evaluateProbability("Pass", scoringScale));
-            System.out.println("Part Score: " + evaluateProbability("Part Score", scoringScale));
-            System.out.println("Game: " + evaluateProbability("Game", scoringScale));
-            System.out.println("Small Slam: " + evaluateProbability("Small Slam", scoringScale));
-            System.out.println("Grand Slam: " + evaluateProbability("Grand Slam", scoringScale));
+            // displays probability of each total score distribution
+            System.out.println("Pass: " + evaluateProbability(scoringScale.get("Pass")));
+            System.out.println("Part Score: " + evaluateProbability(scoringScale.get("Part Score")));
+            System.out.println("Game: " + evaluateProbability(scoringScale.get("Game")));
+            System.out.println("Small Slam: " + evaluateProbability(scoringScale.get("Small Slam")));
+            System.out.println("Grand Slam: " + evaluateProbability(scoringScale.get("Grand Slam")));
 
             System.out.println("\nAnother hand [y/n]? ");
             anotherHand = input.next();
@@ -71,11 +74,13 @@ public class BridgeSimulation {
         System.out.println("\n");
     }
 
-    private static String evaluateProbability(String key, Map<String, Integer> scoringScale) {
-        double probability = (scoringScale.get(key) / 500.0) * 100.0;
+    // evaluates probability of score distribution
+    private static String evaluateProbability(int distr) {
+        double probability = (distr / 500.0) * 100.0;
         return round.format(probability) + "%";
     }
 
+    // evaluate final score of total between hands
     private static void evaluateScore(int score, Map<String, Integer> scoringScale) {
         int count;
         if (score <= 20) {
@@ -96,12 +101,14 @@ public class BridgeSimulation {
         }
     }
 
+    // evaluate a hand's total score
     private static int evaluateHand(ArrayList<Card> hand) {
         int score = 0;
         score = evaluateDistribution(hand) + evaluateHighCards(hand);
         return score;
     }
 
+    // evaluate a hand for high cards
     private static int evaluateHighCards(ArrayList<Card> hand) {
         int score = 0;
 
@@ -118,6 +125,7 @@ public class BridgeSimulation {
         return score;
     }
 
+    // evaluate hand for distribution
     private static int evaluateDistribution(ArrayList<Card> hand) {
         int score = 0;
         Map<Card.Suit, Integer> suits = new HashMap<Card.Suit, Integer>() {{
@@ -131,15 +139,6 @@ public class BridgeSimulation {
             Card.Suit suit = card.getSuit();
             int count = suits.getOrDefault(suit, 0);
             suits.put(suit, count + 1);
-
-//            if (suit == Card.Suit.S)
-//                suits.put(Card.Suit.S, count + 1);
-//            else if (suit == Card.Suit.C)
-//                suits.put(Card.Suit.C, count + 1);
-//            else if (suit == Card.Suit.D)
-//                suits.put(Card.Suit.D, count + 1);
-//            else if (suit == Card.Suit.H)
-//                suits.put(Card.Suit.H, count + 1);
         }
 
         for (Map.Entry<Card.Suit, Integer> distribution : suits.entrySet()) {

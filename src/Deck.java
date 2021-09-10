@@ -23,6 +23,7 @@ public class Deck {
         deck.addAll(deckToCopy.deck);
     }
 
+    // Getter for deck attribute
     public ArrayList<Card> getDeck() {
         return this.deck;
     }
@@ -36,6 +37,7 @@ public class Deck {
         System.out.println("\n");
     }
 
+    // deals a hand from the deck
     public ArrayList<Card> dealHand() {
         ArrayList<Card> hand = new ArrayList<Card>();
         for (int i = 0; i < HAND_SIZE; i++) {
@@ -46,7 +48,7 @@ public class Deck {
         return hand;
     }
 
-    // TODO
+    // sorts a hand by suit and rank
     private void sortHand(ArrayList<Card> hand) {
         int i = 0;
 
@@ -61,8 +63,8 @@ public class Deck {
 
             if (currentSuit > previousSuit)
                 i++;
-            else if (currentSuit == previousSuit) {
-                if (currentRank < previousRank) {
+            else if (currentSuit >= previousSuit) {
+                if (currentRank <= previousRank) {
                     Card temp;
                     temp = hand.get(i);
                     hand.set(i, hand.get(i-1));
