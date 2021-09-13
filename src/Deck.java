@@ -8,7 +8,7 @@ public class Deck {
 
     // Deck constructor
     public Deck() {
-        deck = new ArrayList<Card>();
+        deck = new ArrayList<>();
         for (Card.Suit suit : Card.Suit.values()) {
             for (Card.Rank rank : Card.Rank.values()) {
                 Card card = new Card(suit, rank);
@@ -19,7 +19,7 @@ public class Deck {
 
     // Copy constructor
     public Deck(Deck deckToCopy) {
-        deck = new ArrayList<Card>();
+        deck = new ArrayList<>();
         deck.addAll(deckToCopy.deck);
     }
 
@@ -39,7 +39,7 @@ public class Deck {
 
     // deals a hand from the deck
     public ArrayList<Card> dealHand() {
-        ArrayList<Card> hand = new ArrayList<Card>();
+        ArrayList<Card> hand = new ArrayList<>();
         for (int i = 0; i < HAND_SIZE; i++) {
             hand.add(this.deck.get(i));
             this.deck.remove(i);
@@ -49,6 +49,7 @@ public class Deck {
     }
 
     // sorts a hand by suit and rank
+    // p.s. gnome sort rocks!
     private void sortHand(ArrayList<Card> hand) {
         int i = 0;
 

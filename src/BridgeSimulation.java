@@ -8,6 +8,7 @@ import java.util.Collections;
 // Bridge Simulation Class
 public class BridgeSimulation {
     final static int HAND_SIZE = 13;
+    final static int SIMULATION_COUNT = 500;
     public static final DecimalFormat round = new DecimalFormat("##.##");
 
     // Starting function
@@ -16,17 +17,16 @@ public class BridgeSimulation {
         String anotherHand = "y";
 
         while (anotherHand.equalsIgnoreCase("y")) {
-            int score = 0;
             // instantiate initial deck that player draws from
             Deck deck = new Deck();
             Collections.shuffle(deck.getDeck());
 
             // declare player and partner's hands
-            ArrayList<Card> playerHand, partnerHand = new ArrayList<Card>();
+            ArrayList<Card> playerHand, partnerHand;
             playerHand = deck.dealHand();
 
             // stores score distribution
-            Map<String, Integer> scoringScale = new HashMap<String, Integer>() {{
+            Map<String, Integer> scoringScale = new HashMap<>() {{
                 put("Pass", 0);
                 put("Part Score", 0);
                 put("Game", 0);
@@ -42,12 +42,12 @@ public class BridgeSimulation {
                                "The estimated probability based on 500 simulated hands:");
 
             // Monte Carlo simulation
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < SIMULATION_COUNT; i++) {
                 Deck monteCarloDeck = new Deck(deck);
                 Collections.shuffle(monteCarloDeck.getDeck());
                 partnerHand = monteCarloDeck.dealHand();
 
-                score = 0;
+                int score = 0;
                 score += evaluateHand(playerHand) + evaluateHand(partnerHand);
 
                 evaluateScore(score, scoringScale);
@@ -60,7 +60,7 @@ public class BridgeSimulation {
             System.out.println("Small Slam: " + evaluateProbability(scoringScale.get("Small Slam")));
             System.out.println("Grand Slam: " + evaluateProbability(scoringScale.get("Grand Slam")));
 
-            System.out.println("\nAnother hand [y/n]? ");
+            System.out.print("\nAnother hand [y/n]? ");
             anotherHand = input.next();
         }
     }
@@ -103,7 +103,7 @@ public class BridgeSimulation {
 
     // evaluate a hand's total score
     private static int evaluateHand(ArrayList<Card> hand) {
-        int score = 0;
+        int score;
         score = evaluateDistribution(hand) + evaluateHighCards(hand);
         return score;
     }
@@ -128,7 +128,7 @@ public class BridgeSimulation {
     // evaluate hand for distribution
     private static int evaluateDistribution(ArrayList<Card> hand) {
         int score = 0;
-        Map<Card.Suit, Integer> suits = new HashMap<Card.Suit, Integer>() {{
+        Map<Card.Suit, Integer> suits = new HashMap<>() {{
             put(Card.Suit.S, 0);
             put(Card.Suit.C, 0);
             put(Card.Suit.D, 0);
